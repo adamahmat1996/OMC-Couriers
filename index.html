@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&amp;family=Barlow:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B2A49;
+    --red: #C9342E;
+    --white: #FFFFFF;
+    --charcoal: #222222;
+    --gray: #B5B7BA;
+    --navy-soft: #24365c;
+    --paper: #f6f7f9;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+  body { font-family: 'Barlow', system-ui, sans-serif; color: var(--charcoal); background: var(--white); -webkit-font-smoothing: antialiased; }
+  a { color: var(--red); text-decoration: none; }
+  a:hover { color: #a82823; }
+  ::selection { background: var(--red); color: #fff; }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  @keyframes dash { to { background-position: -220px 0; } }
+  @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+</style>
+</helmet>
+
+<div style="overflow-x:hidden">
+
+  <!-- ===== HEADER / NAV ===== -->
+  <header style="{{ headerStyle }}">
+    <div style="max-width:1200px;margin:0 auto;padding:0 24px;height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px">
+      <a href="#home" style="display:flex;align-items:center;gap:12px;color:inherit">
+        <div style="background:#fff;border-radius:10px;padding:7px 12px;box-shadow:0 4px 14px rgba(0,0,0,.14);display:flex;align-items:center">
+          <img src="assets/omc-logo.jpg" alt="OMC Logistics" style="height:34px;width:auto;display:block">
+        </div>
+        <div style="line-height:.95" data-brandtag="">
+          <div style="font-family:'Barlow',sans-serif;font-weight:600;font-size:9.5px;letter-spacing:3px;color:{{ tagColor }}">MEDICAL COURIER &amp; LOGISTICS</div>
+          <div style="font-family:'Barlow',sans-serif;font-weight:600;font-size:9.5px;letter-spacing:3px;color:{{ tagColor }};margin-top:2px">ATLANTA, GA</div>
+        </div>
+      </a>
+
+      <nav style="display:flex;align-items:center;gap:6px" data-navlinks="">
+        <sc-for list="{{ navLinks }}" as="link" hint-placeholder-count="4">
+          <a href="{{ link.href }}" style="{{ navLinkStyle }}" onMouseEnter="{{ onNavEnter }}" onMouseLeave="{{ onNavLeave }}">{{ link.label }}</a>
+        </sc-for>
+        <a href="#contact" onClick="{{ openQuote }}" style="{{ navCtaStyle }}" onMouseEnter="{{ onCtaEnter }}" onMouseLeave="{{ onCtaLeave }}">Get a Quote</a>
+      </nav>
+
+      <button aria-label="Menu" data-burger="" onClick="{{ toggleMobile }}" style="{{ burgerStyle }}">
+        <span style="display:block;width:22px;height:2px;background:currentColor;border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:currentColor;border-radius:2px"></span>
+        <span style="display:block;width:22px;height:2px;background:currentColor;border-radius:2px"></span>
+      </button>
+    </div>
+
+    <div style="{{ mobileMenuStyle }}">
+      <sc-for list="{{ navLinks }}" as="link" hint-placeholder-count="4">
+        <a href="{{ link.href }}" onClick="{{ closeMobile }}" style="display:block;padding:14px 4px;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:20px;letter-spacing:.5px;color:#fff;border-bottom:1px solid rgba(255,255,255,.12)">{{ link.label }}</a>
+      </sc-for>
+      <a href="#contact" onClick="{{ openQuote }}" style="display:block;margin-top:16px;text-align:center;padding:14px;background:var(--red);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;letter-spacing:1px;border-radius:8px">GET A QUOTE</a>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section id="home" style="position:relative;background:var(--navy);color:#fff;overflow:hidden;padding:150px 24px 110px">
+    <!-- speed lines background -->
+    <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(115deg, rgba(255,255,255,.035) 0 2px, transparent 2px 26px);pointer-events:none"></div>
+    <div style="position:absolute;top:-10%;right:-6%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(201,52,46,.28),transparent 68%);filter:blur(6px);pointer-events:none"></div>
+    <div style="position:absolute;left:0;top:38%;height:4px;width:100%;background:linear-gradient(90deg,var(--red),transparent);opacity:.6"></div>
+
+    <div style="max-width:1200px;margin:0 auto;position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center" data-hero-grid="">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border:1px solid rgba(255,255,255,.18);border-radius:100px;font-weight:600;font-size:12.5px;letter-spacing:1.5px;color:#dfe3ea;margin-bottom:26px">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 4px rgba(201,52,46,.25)"></span>
+          ATLANTA'S TRUSTED COURIER &amp; LOGISTICS
+        </div>
+        <h1 style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(46px,6.4vw,86px);line-height:.94;letter-spacing:-1px;margin-bottom:22px;text-wrap:balance">
+          FAST, RELIABLE<br><span style="color:var(--red)">COURIER</span> LOGISTICS
+        </h1>
+        <p style="font-size:clamp(16px,1.5vw,19px);line-height:1.6;color:#c7cddb;max-width:520px;margin-bottom:34px">
+          From medical specimens to time-critical documents — OMC delivers across the Atlanta metro with HIPAA-compliant handling, real-time tracking, and on-time drop-off you can count on, 7 days a week.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center">
+          <a href="#contact" onClick="{{ openQuote }}" style="{{ heroCtaStyle }}" onMouseEnter="{{ onHeroEnter }}" onMouseLeave="{{ onHeroLeave }}">Get a Free Quote →</a>
+          <a href="#services" style="display:inline-flex;align-items:center;gap:9px;padding:15px 22px;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:17px;letter-spacing:1px;border:1px solid rgba(255,255,255,.25);border-radius:9px">OUR SERVICES</a>
+        </div>
+        <div style="display:flex;gap:34px;margin-top:44px;flex-wrap:wrap">
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:30px;color:#fff">2 HR</div><div style="font-size:12.5px;letter-spacing:1px;color:#9aa3b7;font-weight:600">STAT TURNAROUND</div></div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:30px;color:#fff">30 MIN</div><div style="font-size:12.5px;letter-spacing:1px;color:#9aa3b7;font-weight:600">PRIORITY DISPATCH</div></div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:30px;color:#fff">7 DAYS</div><div style="font-size:12.5px;letter-spacing:1px;color:#9aa3b7;font-weight:600">A WEEK COVERAGE</div></div>
+        </div>
+      </div>
+
+      <!-- hero visual: carrier placeholder with motion lines -->
+      <div style="position:relative;animation:floaty 6s ease-in-out infinite">
+        <div style="position:absolute;left:-40px;top:30%;display:flex;flex-direction:column;gap:9px">
+          <span style="height:3px;width:60px;background:var(--red);border-radius:3px"></span>
+          <span style="height:3px;width:40px;background:rgba(255,255,255,.4);border-radius:3px"></span>
+          <span style="height:3px;width:70px;background:rgba(255,255,255,.25);border-radius:3px"></span>
+        </div>
+        <div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.14);aspect-ratio:5/6;box-shadow:0 30px 60px rgba(0,0,0,.4);background:repeating-linear-gradient(135deg,#223255 0 14px,#1f2e4f 14px 28px)">
+          <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="hero-visual" shape="rect" fit="cover" placeholder="Drop a courier / delivery photo" hint-size="100%,100%" style="position:absolute;inset:0"></x-import>
+        </div>
+        <div style="position:absolute;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);right:-16px;bottom:-18px;background:#fff;color:var(--navy);border-radius:12px;padding:14px 18px;box-shadow:0 18px 40px rgba(0,0,0,.28);display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:9px;background:var(--red);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px">✓</div>
+          <div style="line-height:1.1"><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:19px">Fully Insured</div><div style="font-size:12px;color:#667;font-weight:600">Door-to-door coverage</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES ===== -->
+  <section id="services" style="padding:96px 24px;background:var(--white)">
+    <div style="max-width:1200px;margin:0 auto">
+      <div class="reveal" style="text-align:center;max-width:640px;margin:0 auto 56px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:3px;color:var(--red);font-size:14px;margin-bottom:12px">WHAT WE DO</div>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(34px,4.4vw,52px);line-height:1;color:var(--navy);letter-spacing:-.5px">Transport built for speed and trust</h2>
+        <p style="color:#5a6070;font-size:17px;line-height:1.6;margin-top:16px">Whatever you're moving and wherever it's going, we've got a service tuned for it.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px" data-cards="">
+        <sc-for list="{{ services }}" as="svc" hint-placeholder-count="4">
+          <div class="reveal" style="{{ cardStyle }}" onMouseEnter="{{ onCardEnter }}" onMouseLeave="{{ onCardLeave }}">
+            <div style="width:54px;height:54px;border-radius:12px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:24px">{{ svc.icon }}</div>
+            <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:23px;color:var(--navy);margin-bottom:9px;letter-spacing:.2px">{{ svc.title }}</h3>
+            <p style="color:#5a6070;font-size:15px;line-height:1.6">{{ svc.desc }}</p>
+            <div style="margin-top:18px;height:3px;width:34px;background:var(--red);border-radius:3px"></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHY CHOOSE US ===== -->
+  <section id="about" style="padding:92px 24px;background:var(--navy);color:#fff;position:relative;overflow:hidden">
+    <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(115deg,rgba(255,255,255,.03) 0 2px,transparent 2px 30px);pointer-events:none"></div>
+    <div style="max-width:1200px;margin:0 auto;position:relative">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center" data-why-grid="">
+        <div class="reveal">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:3px;color:var(--red);font-size:14px;margin-bottom:12px">WHY OMC</div>
+          <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(34px,4.4vw,52px);line-height:1;letter-spacing:-.5px">The courier partner Atlanta facilities actually rely on</h2>
+          <p style="color:#c7cddb;font-size:17px;line-height:1.65;margin-top:18px;max-width:480px">HIPAA-trained, background-checked couriers plus hands-on dispatch — so every specimen, prescription, and document is tracked, insured, and delivered on schedule with full chain of custody.</p>
+          <a href="#how" style="display:inline-flex;align-items:center;gap:9px;margin-top:26px;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;letter-spacing:1px;border-bottom:2px solid var(--red);padding-bottom:4px">SEE HOW IT WORKS →</a>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px" data-stats="">
+          <sc-for list="{{ stats }}" as="stat" hint-placeholder-count="4">
+            <div class="reveal" style="background:var(--navy-soft);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:26px 22px">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(36px,4vw,46px);color:#fff;line-height:1">{{ stat.value }}</div>
+              <div style="height:3px;width:30px;background:var(--red);border-radius:3px;margin:12px 0 12px"></div>
+              <div style="font-weight:600;font-size:15px;color:#c7cddb;line-height:1.4">{{ stat.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MISSION & VISION ===== -->
+  <section id="mission" style="padding:96px 24px;background:var(--white)">
+    <div style="max-width:1200px;margin:0 auto">
+      <div class="reveal" style="text-align:center;max-width:640px;margin:0 auto 52px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:3px;color:var(--red);font-size:14px;margin-bottom:12px">WHAT DRIVES US</div>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(34px,4.4vw,52px);line-height:1;color:var(--navy);letter-spacing:-.5px">Our mission &amp; vision</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px" data-mv-grid="">
+        <!-- Mission -->
+        <div class="reveal" style="position:relative;overflow:hidden;background:var(--navy);color:#fff;border-radius:18px;padding:44px 40px">
+          <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(115deg,rgba(255,255,255,.04) 0 2px,transparent 2px 26px);pointer-events:none"></div>
+          <div style="position:absolute;left:40px;top:22px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:110px;line-height:1;color:rgba(201,52,46,.28);pointer-events:none">“</div>
+          <div style="position:relative">
+            <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:20px">
+              <span style="height:3px;width:34px;background:var(--red);border-radius:3px"></span>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;letter-spacing:2px;color:#fff">MISSION</span>
+            </div>
+            <p style="font-size: clamp(18px,1.8vw,22px); line-height: 1.55; font-weight: 500; color: #eef1f6; width: 532px; height: 221px">{{ mission }}</p>
+          </div>
+        </div>
+        <!-- Vision -->
+        <div class="reveal" style="position:relative;overflow:hidden;background:var(--paper);color:var(--charcoal);border:1px solid #e6e8ec;border-radius:18px;padding:44px 40px">
+          <div style="position:absolute;left:40px;top:22px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:110px;line-height:1;color:rgba(27,42,73,.1);pointer-events:none">“</div>
+          <div style="position:relative">
+            <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:20px">
+              <span style="height:3px;width:34px;background:var(--red);border-radius:3px"></span>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;letter-spacing:2px;color:var(--navy)">VISION</span>
+            </div>
+            <p style="font-size:clamp(18px,1.8vw,22px);line-height:1.55;font-weight:500;color:#2c3242">{{ vision }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section id="how" style="padding:96px 24px;background:var(--paper)">
+    <div style="max-width:1200px;margin:0 auto">
+      <div class="reveal" style="text-align:center;max-width:620px;margin:0 auto 60px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:3px;color:var(--red);font-size:14px;margin-bottom:12px">HOW IT WORKS</div>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(34px,4.4vw,52px);line-height:1;color:var(--navy);letter-spacing:-.5px">Shipping in four simple steps</h2>
+      </div>
+      <div style="position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:22px" data-steps="">
+        <div style="position:absolute;left:8%;right:8%;top:34px;height:2px;background:repeating-linear-gradient(90deg,var(--gray) 0 10px,transparent 10px 20px);z-index:0" data-steps-line=""></div>
+        <sc-for list="{{ steps }}" as="step" hint-placeholder-count="4">
+          <div class="reveal" style="position:relative;z-index:1;text-align:center">
+            <div style="width:68px;height:68px;border-radius:50%;background:#fff;border:2px solid var(--navy);color:var(--navy);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:28px;box-shadow:0 8px 22px rgba(27,42,73,.12)">{{ step.num }}</div>
+            <h3 style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:21px;color:var(--navy);margin-bottom:8px">{{ step.title }}</h3>
+            <p style="color:#5a6070;font-size:14.5px;line-height:1.55;max-width:220px;margin:0 auto">{{ step.desc }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section style="padding:96px 24px;background:var(--white)">
+    <div style="max-width:1200px;margin:0 auto">
+      <div class="reveal" style="text-align:center;max-width:620px;margin:0 auto 52px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:3px;color:var(--red);font-size:14px;margin-bottom:12px">CLIENT STORIES</div>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(34px,4.4vw,52px);line-height:1;color:var(--navy);letter-spacing:-.5px">Trusted by Atlanta's healthcare community</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px" data-quotes="">
+        <sc-for list="{{ testimonials }}" as="t" hint-placeholder-count="3">
+          <div class="reveal" style="background:var(--paper);border:1px solid #e6e8ec;border-radius:16px;padding:30px 28px;display:flex;flex-direction:column">
+            <div style="color:var(--red);font-size:17px;letter-spacing:2px;margin-bottom:14px">★★★★★</div>
+            <p style="color:var(--charcoal);font-size:16px;line-height:1.6;font-weight:500;flex:1">“{{ t.quote }}”</p>
+            <div style="display:flex;align-items:center;gap:13px;margin-top:22px;padding-top:20px;border-top:1px solid #e6e8ec">
+              <div style="width:46px;height:46px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px">{{ t.initials }}</div>
+              <div style="line-height:1.2"><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;color:var(--navy)">{{ t.name }}</div><div style="font-size:13px;color:#78808f;font-weight:600">{{ t.role }}</div></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA BANNER ===== -->
+  <section id="contact" style="position:relative;background:var(--red);color:#fff;padding:80px 24px;overflow:hidden">
+    <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(115deg,rgba(255,255,255,.08) 0 2px,transparent 2px 24px);pointer-events:none"></div>
+    <div style="position:absolute;right:-4%;top:-40%;width:420px;height:420px;border-radius:50%;background:rgba(27,42,73,.25);pointer-events:none"></div>
+    <div class="reveal" style="max-width:1000px;margin:0 auto;position:relative;display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap">
+      <div>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(36px,5vw,60px);line-height:.98;letter-spacing:-.5px">NEED A RELIABLE COURIER?</h2>
+        <p style="font-size:18px;line-height:1.55;color:#ffe4e2;margin-top:12px;max-width:520px">Get a free, no-obligation quote in minutes. Our Atlanta dispatch team is standing by 7 days a week.</p>
+      </div>
+      <a href="#contact" onClick="{{ openQuote }}" style="{{ bannerCtaStyle }}" onMouseEnter="{{ onBannerEnter }}" onMouseLeave="{{ onBannerLeave }}">Get a Free Quote →</a>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer style="background:var(--navy);color:#c7cddb;padding:64px 24px 30px">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:40px" data-footer-grid="">
+      <div>
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:18px">
+          <div style="width:40px;height:40px;border-radius:9px;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:23px;color:#fff">O</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:22px;color:#fff;letter-spacing:.5px">OMC<span style="color:var(--red)"> LOGISTICS</span></div>
+        </div>
+        <p style="font-size:14.5px;line-height:1.65;max-width:300px">HIPAA-compliant medical courier &amp; logistics serving the greater Atlanta metro — fast, insured, and always tracked, 7 days a week.</p>
+        <div style="display:flex;gap:10px;margin-top:20px">
+          <sc-for list="{{ socials }}" as="s" hint-placeholder-count="3">
+            <a href="#" aria-label="{{ s.name }}" style="width:38px;height:38px;border-radius:9px;border:1px solid rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px">{{ s.glyph }}</a>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:2px;color:#fff;margin-bottom:16px">QUICK LINKS</div>
+        <sc-for list="{{ navLinks }}" as="link" hint-placeholder-count="4">
+          <a href="{{ link.href }}" style="display:block;color:#c7cddb;font-size:14.5px;padding:6px 0;font-weight:500">{{ link.label }}</a>
+        </sc-for>
+      </div>
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:2px;color:#fff;margin-bottom:16px">SERVICES</div>
+        <sc-for list="{{ services }}" as="svc" hint-placeholder-count="4">
+          <a href="#services" style="display:block;color:#c7cddb;font-size:14.5px;padding:6px 0;font-weight:500">{{ svc.title }}</a>
+        </sc-for>
+      </div>
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:2px;color:#fff;margin-bottom:16px">GET IN TOUCH</div>
+        <div style="font-size:14.5px;line-height:1.9">
+          <div>✉️ <a href="mailto:info@omclogistics.com" style="color:#c7cddb">info@omclogistics.com</a></div>
+          <div>🌐 <a href="#home" style="color:#c7cddb">www.omclogistics.com</a></div>
+          <div style="margin-top:8px;color:#9aa3b7">Atlanta, GA &amp; Metro Area<br>HIPAA Compliant · BAA Available · 7 Days a Week</div>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:44px auto 0;padding-top:24px;border-top:1px solid rgba(255,255,255,.12);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:13px;color:#8b93a7">
+      <div>© {{ year }} OMC Logistics. All rights reserved.</div>
+      <div style="display:flex;gap:22px"><a href="#" style="color:#8b93a7">Privacy Policy</a><a href="#" style="color:#8b93a7">Terms of Service</a></div>
+    </div>
+  </footer>
+
+  <!-- ===== QUOTE REQUEST MODAL ===== -->
+  <div style="{{ overlayStyle }}" onClick="{{ closeQuote }}">
+    <div onClick="{{ stopProp }}" style="width:100%;max-width:640px;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.45);display:flex;flex-direction:column">
+
+      <!-- modal header -->
+      <div style="position:relative;background:var(--navy);color:#fff;padding:26px 28px 22px;overflow:hidden">
+        <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 22px);pointer-events:none"></div>
+        <button aria-label="Close" onClick="{{ closeQuote }}" style="position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:8px;border:1px solid rgba(255,255,255,.22);background:transparent;color:#fff;font-size:18px;cursor:pointer;line-height:1">✕</button>
+        <div style="position:relative">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:3px;color:#f2b8b5;font-size:12px;margin-bottom:6px">FREE QUOTE REQUEST</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:30px;line-height:1">{{ modalHeading }}</div>
+          <!-- progress -->
+          <div style="display:flex;align-items:center;gap:8px;margin-top:16px">
+            <span style="{{ dot1Style }}"></span>
+            <span style="height:2px;flex:1;max-width:40px;background:rgba(255,255,255,.25)"></span>
+            <span style="{{ dot2Style }}"></span>
+            <span style="height:2px;flex:1;max-width:40px;background:rgba(255,255,255,.25)"></span>
+            <span style="{{ dot3Style }}"></span>
+            <span style="margin-left:8px;font-size:12.5px;font-weight:600;color:#c7cddb">{{ stepLabel }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- modal body -->
+      <div style="padding:24px 28px;overflow-y:auto;max-height:60vh">
+
+        <!-- STEP 1 -->
+        <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;color:var(--navy);margin-bottom:10px;text-transform:uppercase">1 · What do you need delivered?</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px" data-qgrid>
+              <sc-for list="{{ serviceOptions }}" as="opt" hint-placeholder-count="4">
+                <button type="button" onClick="{{ opt.onClick }}" style="{{ opt.style }}"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--navy);letter-spacing:.3px">{{ opt.label }}</span><span style="font-size:12.5px;color:#6b7280">{{ opt.sub }}</span></button>
+              </sc-for>
+            </div>
+
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;color:var(--navy);margin-bottom:10px;text-transform:uppercase">2 · How urgent is it?</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px" data-qgrid>
+              <sc-for list="{{ urgencyOptions }}" as="opt" hint-placeholder-count="4">
+                <button type="button" onClick="{{ opt.onClick }}" style="{{ opt.style }}"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--navy);letter-spacing:.3px">{{ opt.label }}</span><span style="font-size:12.5px;color:#6b7280">{{ opt.sub }}</span></button>
+              </sc-for>
+            </div>
+
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;color:var(--navy);margin-bottom:10px;text-transform:uppercase">3 · How often?</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px" data-qgrid>
+              <sc-for list="{{ frequencyOptions }}" as="opt" hint-placeholder-count="4">
+                <button type="button" onClick="{{ opt.onClick }}" style="{{ opt.style }}"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--navy);letter-spacing:.3px">{{ opt.label }}</span><span style="font-size:12.5px;color:#6b7280">{{ opt.sub }}</span></button>
+              </sc-for>
+            </div>
+
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;color:var(--navy);margin-bottom:10px;text-transform:uppercase">4 · Approximate distance</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:8px" data-qgrid3>
+              <sc-for list="{{ distanceOptions }}" as="opt" hint-placeholder-count="3">
+                <button type="button" onClick="{{ opt.onClick }}" style="{{ opt.style }}"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--navy);letter-spacing:.3px">{{ opt.label }}</span><span style="font-size:12.5px;color:#6b7280">{{ opt.sub }}</span></button>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{ hasEstimate }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:18px;border:1.5px solid rgba(201,52,46,.3);background:rgba(201,52,46,.05);border-radius:14px;padding:18px 20px">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;color:var(--red)">ESTIMATED RATE</div>
+                <div style="display:flex;align-items:baseline;gap:8px;margin-top:4px"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:34px;color:var(--navy);line-height:1">{{ estRange }}</span><span style="font-size:14px;color:#6b7280;font-weight:600">{{ estUnit }}</span></div>
+                <div style="font-size:13.5px;color:#5a6070;margin-top:6px">{{ estNote }}</div>
+                <div style="font-size:12px;color:#8b93a7;margin-top:8px">Estimate only — final pricing confirmed after a quick route assessment. Volume discounts available.</div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- STEP 2 -->
+        <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px" data-qform>
+              <div>
+                <label style="display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;color:var(--navy);margin-bottom:6px">FULL NAME *</label>
+                <input value="{{ form.name }}" onInput="{{ onName }}" placeholder="Jane Doe" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}">
+              </div>
+              <div>
+                <label style="display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;color:var(--navy);margin-bottom:6px">EMAIL *</label>
+                <input value="{{ form.email }}" onInput="{{ onEmail }}" type="email" placeholder="jane@facility.com" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}">
+              </div>
+              <div>
+                <label style="display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;color:var(--navy);margin-bottom:6px">PHONE</label>
+                <input value="{{ form.phone }}" onInput="{{ onPhone }}" placeholder="(404) 555-0100" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}">
+              </div>
+              <div>
+                <label style="display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;color:var(--navy);margin-bottom:6px">FACILITY / COMPANY</label>
+                <input value="{{ form.facility }}" onInput="{{ onFacility }}" placeholder="Metro Diagnostics" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}">
+              </div>
+              <div style="grid-column:1 / -1">
+                <label style="display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;color:var(--navy);margin-bottom:6px">FACILITY TYPE</label>
+                <select value="{{ form.facilityType }}" onChange="{{ onFacilityType }}" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}">
+                  <option value="">Select…</option>
+                  <option value="Hospital">Hospital / Health System</option>
+                  <option value="Laboratory">Laboratory</option>
+                  <option value="Physician Practice">Physician Practice</option>
+                  <option value="Pharmacy">Pharmacy</option>
+                  <option value="Clinic">Clinic</option>
+                  <option value="Urgent Care">Urgent Care</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label style="display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;color:var(--navy);margin-bottom:6px">PICKUP LOCATION</label>
+                <input value="{{ form.pickup }}" onInput="{{ onPickup }}" placeholder="Address or facility" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}">
+              </div>
+              <div>
+                <label style="display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;color:var(--navy);margin-bottom:6px">DELIVERY LOCATION</label>
+                <input value="{{ form.delivery }}" onInput="{{ onDelivery }}" placeholder="Address or facility" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}">
+              </div>
+              <div style="grid-column:1 / -1">
+                <label style="display:block;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;color:var(--navy);margin-bottom:6px">ANYTHING ELSE?</label>
+                <textarea value="{{ form.notes }}" onInput="{{ onNotes }}" rows="3" placeholder="Schedule, special handling, temperature needs…" style="{{ inputStyle }}" style-focus="{{ inputFocusStyle }}"></textarea>
+              </div>
+            </div>
+
+            <sc-if value="{{ hasEstimate }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;border-top:1px dashed #dfe2e8;padding-top:16px">
+                <div style="font-size:13.5px;color:#5a6070"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px;color:var(--navy)">YOUR ESTIMATE</span></div>
+                <div style="display:flex;align-items:baseline;gap:7px"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:24px;color:var(--red)">{{ estRange }}</span><span style="font-size:13px;color:#6b7280;font-weight:600">{{ estUnit }}</span></div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- STEP 3 · SUCCESS -->
+        <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding:14px 4px 6px">
+            <div style="width:72px;height:72px;border-radius:50%;background:rgba(31,138,91,.12);color:#1F8A5B;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:36px">✓</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:28px;color:var(--navy);line-height:1.05">Request received{{ nameSuffix }}</div>
+            <p style="color:#5a6070;font-size:15.5px;line-height:1.6;max-width:420px;margin:12px auto 0">Thanks — our Atlanta dispatch team will follow up within one business hour to confirm details and finalize your quote.</p>
+            <div style="margin-top:22px;text-align:left;background:var(--paper);border:1px solid #e6e8ec;border-radius:14px;padding:20px 22px">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;color:var(--navy);margin-bottom:12px">REQUEST SUMMARY</div>
+              <sc-for list="{{ summaryRows }}" as="row" hint-placeholder-count="4">
+                <div style="display:flex;justify-content:space-between;gap:14px;padding:6px 0;border-bottom:1px solid #ececf0;font-size:14px"><span style="color:#78808f;font-weight:600">{{ row.label }}</span><span style="color:var(--navy);font-weight:600;text-align:right">{{ row.value }}</span></div>
+              </sc-for>
+              <sc-if value="{{ hasEstimate }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;justify-content:space-between;gap:14px;padding-top:12px;margin-top:6px;align-items:baseline"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1px;color:var(--navy)">ESTIMATE</span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;color:var(--red)">{{ estRange }} <span style="font-size:12px;color:#6b7280;font-weight:600">{{ estUnit }}</span></span></div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <!-- modal footer -->
+      <div style="padding:16px 28px;border-top:1px solid #eceef2;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff">
+        <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ true }}">
+          <button type="button" onClick="{{ closeQuote }}" style="padding:12px 20px;background:none;border:none;color:#78808f;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:.5px;cursor:pointer">Cancel</button>
+          <button type="button" onClick="{{ nextStep }}" style="{{ continueStyle }}">Continue →</button>
+        </sc-if>
+        <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+          <button type="button" onClick="{{ prevStep }}" style="padding:12px 20px;background:none;border:none;color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:.5px;cursor:pointer">← Back</button>
+          <button type="button" onClick="{{ submitQuote }}" style="{{ submitStyle }}">Submit Request</button>
+        </sc-if>
+        <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size:13px;color:#8b93a7">Reference saved locally</span>
+          <button type="button" onClick="{{ closeQuote }}" style="{{ continueStyle }}">Done</button>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    scrolled: false,
+    mobileOpen: false,
+    quoteOpen: false,
+    quoteStep: 1,
+    submitted: false,
+    form: {
+      service: '', urgency: '', distance: '', frequency: '',
+      name: '', facility: '', facilityType: '', email: '', phone: '',
+      pickup: '', delivery: '', notes: ''
+    }
+  };
+
+  componentDidMount() {
+    this._onScroll = () => {
+      const s = window.scrollY > 20;
+      if (s !== this.state.scrolled) this.setState({ scrolled: s });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+
+    // scroll reveal
+    this._io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); this._io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    const scan = () => document.querySelectorAll('.reveal:not(.in)').forEach((el, i) => {
+      el.style.transitionDelay = ((i % 4) * 70) + 'ms';
+      this._io.observe(el);
+    });
+    scan();
+    this._scanT = setInterval(scan, 400);
+    setTimeout(() => clearInterval(this._scanT), 4000);
+
+    this._mq = window.matchMedia('(max-width: 860px)');
+    this._onMq = () => this.forceUpdate();
+    this._mq.addEventListener('change', this._onMq);
+    this._injectResponsive();
+
+    // Prefill the hero image-slot with a stock photo (x-import doesn't forward
+    // src/credit to the web component, so set them imperatively once it mounts).
+    this._fillHero = () => {
+      const el = document.getElementById('hero-visual');
+      if (!el || typeof el.setAttribute !== 'function') { this._heroT = setTimeout(this._fillHero, 120); return; }
+      if (!el.getAttribute('src')) {
+        el.setAttribute('src', 'https://images.unsplash.com/photo-1584432810601-6c7f27d2362b?fm=jpg&q=70&w=1600&auto=format&fit=crop&ixlib=rb-4.1.0');
+        el.setAttribute('credit', 'Photo by JESHOOTS.COM on Unsplash');
+        el.setAttribute('credit-href', 'https://unsplash.com/@jeshoots');
+      }
+    };
+    this._fillHero();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this._onScroll);
+    this._io && this._io.disconnect();
+    clearInterval(this._scanT);
+    clearTimeout(this._heroT);
+    this._mq && this._mq.removeEventListener('change', this._onMq);
+  }
+
+  openQuote = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    document.body.style.overflow = 'hidden';
+    this.setState({ quoteOpen: true, quoteStep: 1, submitted: false, mobileOpen: false });
+  };
+  closeQuote = () => {
+    document.body.style.overflow = '';
+    this.setState({ quoteOpen: false });
+  };
+  setField = (k, v) => this.setState(s => ({ form: { ...s.form, [k]: v } }));
+  bindField = (k) => (e) => this.setField(k, e.target.value);
+
+  canProceed() {
+    const f = this.state.form;
+    if (!f.service || !f.urgency || !f.frequency) return false;
+    // distance only required for one-time per-delivery standard/STAT pricing
+    if (f.frequency === 'One-time delivery' && !f.distance) return false;
+    return true;
+  }
+  nextStep = () => { if (this.canProceed()) this.setState({ quoteStep: 2 }); };
+  prevStep = () => this.setState({ quoteStep: 1 });
+  submitQuote = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const f = this.state.form;
+    if (!f.name || !f.email) return;
+    try {
+      const key = 'omc_quote_requests';
+      const prev = JSON.parse(localStorage.getItem(key) || '[]');
+      prev.push({ ...f, ts: new Date().toISOString() });
+      localStorage.setItem(key, JSON.stringify(prev));
+    } catch (err) {}
+    this.setState({ submitted: true, quoteStep: 3 });
+  };
+
+  estimate() {
+    const f = this.state.form;
+    if (f.frequency === 'Daily route') return { range: '$200 – $400', unit: 'per day', note: 'Dedicated daily route, up to 20 stops' };
+    if (f.frequency === 'Weekly route') return { range: '$850 – $1,800', unit: 'per week', note: 'Predictable recurring weekly schedule' };
+    if (f.frequency === 'Monthly contract') return { range: '$2,500 – $9,500', unit: 'per month', note: 'Final tier set by stops/day & days/week' };
+    // one-time / per delivery
+    if (!f.urgency) return null;
+    if (f.urgency === 'STAT (2-hr)') return { range: '$75 – $125', unit: 'per delivery', note: 'Priority dispatch within 30 minutes' };
+    if (f.urgency === 'Same-day rush') return { range: '$55 – $85', unit: 'per delivery', note: '4-hour-or-less turnaround' };
+    if (f.urgency === 'Scheduled route') return { range: '$12 – $18', unit: 'per stop', note: 'Scheduled multi-stop route pricing' };
+    // standard by distance
+    const dist = { '0–10 mi': '$25 – $40', '11–25 mi': '$45 – $65', '26–50 mi': '$65 – $95' };
+    if (f.distance && dist[f.distance]) return { range: dist[f.distance], unit: 'per delivery', note: 'Standard local delivery, ' + f.distance };
+    return null;
+  }
+
+  _chipList(key, items) {
+    const cur = this.state.form[key];
+    return items.map(it => {
+      const active = cur === it.value;
+      return {
+        label: it.label, sub: it.sub || '',
+        onClick: () => this.setField(key, it.value),
+        style: {
+          display: 'flex', flexDirection: 'column', gap: '3px', textAlign: 'left', cursor: 'pointer', width: '100%',
+          padding: '13px 15px', borderRadius: '11px',
+          border: '1.5px solid ' + (active ? 'var(--red)' : '#dfe2e8'),
+          background: active ? 'rgba(201,52,46,.06)' : '#fff',
+          fontFamily: "'Barlow',sans-serif", transition: 'border-color .15s, background .15s'
+        }
+      };
+    });
+  }
+
+  _injectResponsive() {
+    if (document.getElementById('omc-responsive')) return;
+    const st = document.createElement('style');
+    st.id = 'omc-responsive';
+    st.textContent = `
+      [data-burger]{display:none}
+      @media (max-width: 980px){
+        [data-cards]{grid-template-columns:repeat(2,1fr)!important}
+        [data-quotes]{grid-template-columns:1fr!important}
+        [data-footer-grid]{grid-template-columns:1fr 1fr!important}
+      }
+      @media (max-width: 860px){
+        [data-navlinks]{display:none!important}
+        [data-burger]{display:flex!important}
+        [data-hero-grid]{grid-template-columns:1fr!important}
+        [data-why-grid]{grid-template-columns:1fr!important}
+        [data-mv-grid]{grid-template-columns:1fr!important}
+        [data-steps]{grid-template-columns:1fr 1fr!important;gap:34px 22px!important}
+        [data-steps-line]{display:none!important}
+      }
+      @media (max-width: 560px){
+        [data-cards]{grid-template-columns:1fr!important}
+        [data-steps]{grid-template-columns:1fr!important}
+        [data-stats]{grid-template-columns:1fr!important}
+        [data-footer-grid]{grid-template-columns:1fr!important}
+        [data-qgrid]{grid-template-columns:1fr!important}
+        [data-qgrid3]{grid-template-columns:1fr!important}
+        [data-qform]{grid-template-columns:1fr!important}
+      }`;
+    document.head.appendChild(st);
+  }
+
+  renderVals() {
+    const scrolled = this.state.scrolled;
+    const solid = scrolled;
+
+    const headerStyle = {
+      position: 'fixed', top: 0, left: 0, right: 0, height: '72px', zIndex: 100,
+      background: solid ? 'rgba(255,255,255,.96)' : 'transparent',
+      backdropFilter: solid ? 'saturate(140%) blur(10px)' : 'none',
+      WebkitBackdropFilter: solid ? 'saturate(140%) blur(10px)' : 'none',
+      boxShadow: solid ? '0 2px 20px rgba(27,42,73,.1)' : 'none',
+      borderBottom: solid ? '1px solid rgba(27,42,73,.08)' : '1px solid transparent',
+      transition: 'background .3s, box-shadow .3s, border-color .3s'
+    };
+    const brandColor = solid ? 'var(--navy)' : '#fff';
+    const tagColor = solid ? '#8b93a7' : 'rgba(255,255,255,.7)';
+
+    const navLinkBase = {
+      padding: '9px 14px', borderRadius: '8px', fontFamily: "'Barlow Condensed',sans-serif",
+      fontWeight: 600, fontSize: '17px', letterSpacing: '.6px',
+      color: solid ? 'var(--navy)' : '#fff', transition: 'background .2s,color .2s'
+    };
+    const navCtaStyle = {
+      marginLeft: '8px', padding: '10px 20px', background: 'var(--red)', color: '#fff',
+      fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: '16px',
+      letterSpacing: '.8px', borderRadius: '8px', transition: 'transform .2s, box-shadow .2s',
+      boxShadow: '0 6px 16px rgba(201,52,46,.3)'
+    };
+
+    const burgerStyle = {
+      flexDirection: 'column', gap: '5px', background: 'none', border: 'none', cursor: 'pointer',
+      color: solid ? 'var(--navy)' : '#fff', padding: '6px'
+    };
+    const mobileMenuStyle = {
+      display: this.state.mobileOpen ? 'block' : 'none',
+      background: 'var(--navy)', padding: '16px 24px 24px', borderTop: '1px solid rgba(255,255,255,.1)'
+    };
+
+    const heroCtaStyle = {
+      display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '15px 26px',
+      background: 'var(--red)', color: '#fff', fontFamily: "'Barlow Condensed',sans-serif",
+      fontWeight: 700, fontSize: '18px', letterSpacing: '1px', borderRadius: '9px',
+      boxShadow: '0 10px 26px rgba(201,52,46,.4)', transition: 'transform .2s, box-shadow .2s'
+    };
+    const cardStyle = {
+      background: '#fff', border: '1px solid #e6e8ec', borderRadius: '16px', padding: '30px 26px',
+      transition: 'transform .25s, box-shadow .25s, border-color .25s', cursor: 'default'
+    };
+    const bannerCtaStyle = {
+      display: 'inline-flex', alignItems: 'center', gap: '9px', padding: '17px 34px',
+      background: '#fff', color: 'var(--navy)', fontFamily: "'Barlow Condensed',sans-serif",
+      fontWeight: 800, fontSize: '20px', letterSpacing: '1px', borderRadius: '10px',
+      boxShadow: '0 12px 30px rgba(0,0,0,.22)', transition: 'transform .2s, box-shadow .2s'
+    };
+
+    // ---- Quote flow ----
+    const f = this.state.form;
+    const est = this.estimate();
+    const inputStyle = {
+      width: '100%', padding: '12px 14px', border: '1.5px solid #dfe2e8', borderRadius: '10px',
+      fontFamily: "'Barlow',sans-serif", fontSize: '15px', color: 'var(--navy)', background: '#fff', outline: 'none'
+    };
+    const inputFocusStyle = { borderColor: 'var(--red)', boxShadow: '0 0 0 3px rgba(201,52,46,.12)' };
+    const overlayStyle = {
+      position: 'fixed', inset: 0, zIndex: 1000, display: this.state.quoteOpen ? 'flex' : 'none',
+      alignItems: 'flex-start', justifyContent: 'center', padding: '5vh 16px 24px', overflowY: 'auto',
+      background: 'rgba(15,22,40,.62)', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)'
+    };
+    const summaryRows = [
+      { label: 'Service', value: f.service },
+      { label: 'Urgency', value: f.urgency },
+      { label: 'Frequency', value: f.frequency },
+      { label: 'Distance', value: f.distance }
+    ].filter(r => r.value);
+
+    return {
+      // quote flow
+      openQuote: this.openQuote, closeQuote: this.closeQuote,
+      nextStep: this.nextStep, prevStep: this.prevStep, submitQuote: this.submitQuote,
+      stopProp: (e) => e.stopPropagation(),
+      overlayStyle, inputStyle, inputFocusStyle,
+      modalHeading: this.state.quoteStep === 1 ? 'Tell us about your delivery' : this.state.quoteStep === 2 ? 'Your contact details' : 'All set!',
+      stepLabel: this.state.quoteStep === 3 ? 'Complete' : 'Step ' + this.state.quoteStep + ' of 2',
+      dot1Style: { width: '10px', height: '10px', borderRadius: '50%', background: this.state.quoteStep >= 1 ? 'var(--red)' : 'rgba(255,255,255,.3)' },
+      dot2Style: { width: '10px', height: '10px', borderRadius: '50%', background: this.state.quoteStep >= 2 ? 'var(--red)' : 'rgba(255,255,255,.3)' },
+      dot3Style: { width: '10px', height: '10px', borderRadius: '50%', background: this.state.quoteStep >= 3 ? 'var(--red)' : 'rgba(255,255,255,.3)' },
+      nameSuffix: f.name ? ', ' + f.name.trim().split(/\s+/)[0] : '',
+      quoteStep: this.state.quoteStep,
+      isStep1: this.state.quoteStep === 1,
+      isStep2: this.state.quoteStep === 2,
+      isDone: this.state.quoteStep === 3,
+      canProceed: this.canProceed(),
+      continueStyle: {
+        display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '13px 26px', border: 'none',
+        background: this.canProceed() ? 'var(--red)' : '#d7dae0', color: '#fff', cursor: this.canProceed() ? 'pointer' : 'not-allowed',
+        fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: '17px', letterSpacing: '.8px', borderRadius: '9px', transition: 'background .15s'
+      },
+      submitStyle: {
+        display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '13px 26px', border: 'none',
+        background: (f.name && f.email) ? 'var(--red)' : '#d7dae0', color: '#fff', cursor: (f.name && f.email) ? 'pointer' : 'not-allowed',
+        fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: '17px', letterSpacing: '.8px', borderRadius: '9px', transition: 'background .15s'
+      },
+      form: f,
+      onName: this.bindField('name'), onFacility: this.bindField('facility'), onFacilityType: this.bindField('facilityType'),
+      onEmail: this.bindField('email'), onPhone: this.bindField('phone'),
+      onPickup: this.bindField('pickup'), onDelivery: this.bindField('delivery'), onNotes: this.bindField('notes'),
+      serviceOptions: this._chipList('service', [
+        { label: 'Medical Specimen', sub: 'Blood, labs, pathology' },
+        { label: 'Pharmaceutical', sub: 'Rx & cold-chain meds' },
+        { label: 'Records & Documents', sub: 'Charts, reports, forms' },
+        { label: 'Equipment & Supplies', sub: 'DME & facility supplies' }
+      ].map(x => ({ ...x, value: x.label }))),
+      urgencyOptions: this._chipList('urgency', [
+        { label: 'STAT (2-hr)', sub: '30-min dispatch' },
+        { label: 'Same-day rush', sub: '≤ 4-hour turnaround' },
+        { label: 'Scheduled route', sub: 'Recurring pickups' },
+        { label: 'Standard', sub: 'Next available' }
+      ].map(x => ({ ...x, value: x.label }))),
+      distanceOptions: this._chipList('distance', [
+        { label: '0–10 mi', sub: 'In-town Atlanta' },
+        { label: '11–25 mi', sub: 'Surrounding metro' },
+        { label: '26–50 mi', sub: 'Outer metro' }
+      ].map(x => ({ ...x, value: x.label }))),
+      frequencyOptions: this._chipList('frequency', [
+        { label: 'One-time delivery', sub: 'Single run' },
+        { label: 'Daily route', sub: 'Every business day' },
+        { label: 'Weekly route', sub: 'Set weekly schedule' },
+        { label: 'Monthly contract', sub: 'Dedicated program' }
+      ].map(x => ({ ...x, value: x.label }))),
+      hasEstimate: !!est,
+      estRange: est ? est.range : '',
+      estUnit: est ? est.unit : '',
+      estNote: est ? est.note : '',
+      summaryRows,
+      year: new Date().getFullYear(),
+      headerStyle, brandColor, tagColor,
+      navLinkStyle: navLinkBase, navCtaStyle, burgerStyle, mobileMenuStyle,
+      heroCtaStyle, cardStyle, bannerCtaStyle,
+
+      onNavEnter: (e) => { e.currentTarget.style.background = solid ? 'rgba(27,42,73,.07)' : 'rgba(255,255,255,.14)'; e.currentTarget.style.color = solid ? 'var(--red)' : '#fff'; },
+      onNavLeave: (e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = solid ? 'var(--navy)' : '#fff'; },
+      onCtaEnter: (e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 10px 22px rgba(201,52,46,.45)'; },
+      onCtaLeave: (e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 6px 16px rgba(201,52,46,.3)'; },
+      onHeroEnter: (e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 16px 34px rgba(201,52,46,.5)'; },
+      onHeroLeave: (e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 10px 26px rgba(201,52,46,.4)'; },
+      onCardEnter: (e) => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = '0 20px 40px rgba(27,42,73,.14)'; e.currentTarget.style.borderColor = 'var(--navy)'; },
+      onCardLeave: (e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#e6e8ec'; },
+      onBannerEnter: (e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 18px 40px rgba(0,0,0,.3)'; },
+      onBannerLeave: (e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 12px 30px rgba(0,0,0,.22)'; },
+
+      toggleMobile: () => this.setState(s => ({ mobileOpen: !s.mobileOpen })),
+      closeMobile: () => this.setState({ mobileOpen: false }),
+
+      navLinks: [
+        { label: 'Home', href: '#home' },
+        { label: 'Services', href: '#services' },
+        { label: 'About', href: '#about' },
+        { label: 'Mission', href: '#mission' },
+        { label: 'Contact', href: '#contact' }
+      ],
+      services: [
+        { icon: '🧪', title: 'Medical Specimen Transport', desc: 'Blood, urine, biopsies, cultures and pathology moved with temperature control and chain of custody at every step.' },
+        { icon: '💊', title: 'Pharmaceutical Delivery', desc: 'Prescriptions, specialty and cold-chain medications with verified, HIPAA-compliant delivery confirmation.' },
+        { icon: '📄', title: 'Records & Document Courier', desc: 'Patient records, lab reports, prior authorizations and insurance forms handled with full HIPAA compliance.' },
+        { icon: '⚡', title: 'STAT & Expedited Delivery', desc: 'Priority dispatch within 30 minutes and a 2-hour STAT turnaround guarantee when the clock matters most.' }
+      ],
+      stats: [
+        { value: 'HIPAA', label: 'Trained & compliant couriers' },
+        { value: '7 Days', label: 'A week, STAT-capable dispatch' },
+        { value: '100%', label: 'Insured & background-checked' },
+        { value: '30 Min', label: 'Priority STAT dispatch time' }
+      ],
+      steps: [
+        { num: '1', title: 'Request a Quote', desc: 'Tell us your facility, route and urgency — get transparent pricing fast.' },
+        { num: '2', title: 'Schedule Pickup', desc: 'We assign a trained, badged courier and confirm your pickup window.' },
+        { num: '3', title: 'Track in Real Time', desc: 'Signed manifests at origin plus live electronic status the whole way.' },
+        { num: '4', title: 'Delivered', desc: 'Chain-of-custody drop-off with electronic delivery confirmation at every stop.' }
+      ],
+      testimonials: [
+        { quote: 'OMC\u2019s STAT dispatch is genuinely under 30 minutes. Our specimen turnaround times improved the first week we switched.', name: 'Marcus Reyes', role: 'Lab Manager, Metro Diagnostics', initials: 'MR' },
+        { quote: 'Daily route pickups arrive on schedule every single day, and the chain-of-custody paperwork is always spotless.', name: 'Danielle Okafor', role: 'Practice Manager, Peachtree Clinic', initials: 'DO' },
+        { quote: 'HIPAA-trained, insured, and reachable any hour. OMC has become the courier we route all our facility deliveries through.', name: 'Tom Whitfield', role: 'Materials Director, Atlanta Health', initials: 'TW' }
+      ],
+      mission: 'To provide dependable, efficient, and professional delivery solutions that connect Atlanta\u2019s businesses and communities through safe, timely, and customer-focused courier services — handled with care from pickup to drop-off.',
+      vision: 'To become Atlanta\u2019s most trusted and versatile courier and logistics company, recognized for our reliability, professionalism, and commitment to delivering anything, anywhere, on time — every time.',
+      socials: [
+        { name: 'LinkedIn', glyph: 'in' },
+        { name: 'X', glyph: '𝕏' },
+        { name: 'Facebook', glyph: 'f' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
