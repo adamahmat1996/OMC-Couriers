@@ -447,19 +447,24 @@
         </sc-if>
         <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
           <button type="button" onClick="{{ prevStep }}" style="padding:12px 20px;background:none;border:none;color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:.5px;cursor:pointer">← Back</button>
-          <button type="button" onClick="{{ submitQuote }}" style="{{ submitStyle }}">Submit Request</button>
+          <button type="button" onClick="{{ submitQuote }}" style="{{ submitStyle }}">{{ submitLabel }}</button>
         </sc-if>
         <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
-          <span style="font-size:13px;color:#8b93a7">Reference saved locally</span>
+          <span style="font-size:13px;color:#8b93a7">Sent to our dispatch team</span>
           <button type="button" onClick="{{ closeQuote }}" style="{{ continueStyle }}">Done</button>
         </sc-if>
       </div>
+      <sc-if value="{{ hasSubmitError }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:0 28px 16px;text-align:right;font-size:13px;color:var(--red)">{{ submitError }}</div>
+      </sc-if>
     </div>
   </div>
 
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xykqraog';
+
 class Component extends DCLogic {
   state = {
     scrolled: false,
@@ -467,6 +472,8 @@ class Component extends DCLogic {
     quoteOpen: false,
     quoteStep: 1,
     submitted: false,
+    submitting: false,
+    submitError: '',
     form: {
       service: '', urgency: '', distance: '', frequency: '',
       name: '', facility: '', facilityType: '', email: '', phone: '',
@@ -540,17 +547,38 @@ class Component extends DCLogic {
   }
   nextStep = () => { if (this.canProceed()) this.setState({ quoteStep: 2 }); };
   prevStep = () => this.setState({ quoteStep: 1 });
-  submitQuote = (e) => {
+  submitQuote = async (e) => {
     if (e && e.preventDefault) e.preventDefault();
     const f = this.state.form;
-    if (!f.name || !f.email) return;
+    if (!f.name || !f.email || this.state.submitting) return;
     try {
       const key = 'omc_quote_requests';
       const prev = JSON.parse(localStorage.getItem(key) || '[]');
       prev.push({ ...f, ts: new Date().toISOString() });
       localStorage.setItem(key, JSON.stringify(prev));
     } catch (err) {}
-    this.setState({ submitted: true, quoteStep: 3 });
+
+    this.setState({ submitting: true, submitError: '' });
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          _subject: `New quote request from ${f.name}${f.facility ? ' — ' + f.facility : ''}`,
+          name: f.name, email: f.email, phone: f.phone,
+          facility: f.facility, facilityType: f.facilityType,
+          service: f.service, urgency: f.urgency, frequency: f.frequency, distance: f.distance,
+          pickup: f.pickup, delivery: f.delivery, notes: f.notes
+        })
+      });
+      if (!res.ok) throw new Error('Formspree request failed: ' + res.status);
+      this.setState({ submitting: false, submitted: true, quoteStep: 3 });
+    } catch (err) {
+      this.setState({
+        submitting: false,
+        submitError: "Something went wrong sending your request. Please try again or call us directly."
+      });
+    }
   };
 
   estimate() {
@@ -717,9 +745,13 @@ class Component extends DCLogic {
       },
       submitStyle: {
         display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '13px 26px', border: 'none',
-        background: (f.name && f.email) ? 'var(--red)' : '#d7dae0', color: '#fff', cursor: (f.name && f.email) ? 'pointer' : 'not-allowed',
+        background: (f.name && f.email && !this.state.submitting) ? 'var(--red)' : '#d7dae0', color: '#fff',
+        cursor: (f.name && f.email && !this.state.submitting) ? 'pointer' : 'not-allowed',
         fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: '17px', letterSpacing: '.8px', borderRadius: '9px', transition: 'background .15s'
       },
+      submitLabel: this.state.submitting ? 'Sending…' : 'Submit Request',
+      submitError: this.state.submitError,
+      hasSubmitError: !!this.state.submitError,
       form: f,
       onName: this.bindField('name'), onFacility: this.bindField('facility'), onFacilityType: this.bindField('facilityType'),
       onEmail: this.bindField('email'), onPhone: this.bindField('phone'),
